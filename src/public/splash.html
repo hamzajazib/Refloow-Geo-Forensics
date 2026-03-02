@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading Refloow GeoForensics</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #121212;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            border: none;
+            box-sizing: border-box;
+        }
+        .splash-container {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .logo-img {
+            width: 240px;
+            height: auto;
+            animation: pulse 1.2s infinite;
+            margin-bottom: 50px;
+            will-change: transform, opacity;
+        }
+        .loading-text {
+            font-size: 1rem;
+            color: #888;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(0.95); opacity: 0.8; }
+        }
+    </style>
+</head>
+<body>
+    <div class="splash-container">
+        <img src="../img/RefloowLogo.png" alt="Refloow Logo" class="logo-img">
+        <div class="loading-text">loading...</div>
+    </div>
+</body>
+</html>
