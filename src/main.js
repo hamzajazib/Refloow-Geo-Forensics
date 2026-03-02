@@ -67,6 +67,7 @@ function createWindow() {
         height: 800,
         title: "Refloow GeoForensics",
         // Reminder add .ico for other distributions and other data in future version
+        backgroundColor: '#121212',
         webPreferences: {
             nodeIntegration: false,
             contextIsolation: true
@@ -109,4 +110,5 @@ app.on('window-all-closed', function () {
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
  */
+
 
