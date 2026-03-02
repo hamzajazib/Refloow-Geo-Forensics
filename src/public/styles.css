@@ -68,6 +68,10 @@ button:hover {
     background-color: #c0354e;
 }
 
+#map {
+    background-color:#262626;
+}
+
 #main-area {
     display: flex;
     flex: 1;
@@ -122,4 +126,5 @@ button:hover {
 .evidence-meta {
     font-size: 12px;
     color: #aaa;
+
 }
