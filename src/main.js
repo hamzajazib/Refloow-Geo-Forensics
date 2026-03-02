@@ -104,6 +104,12 @@ function createWindow() {
 
     mainWindow.setMenuBarVisibility(false);
 
+    // Intercept target="_blank" links and open them in the user's default browser
+    mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+        require('electron').shell.openExternal(url);
+        return { action: 'deny' };
+    });
+
     mainWindow.loadURL(`http://localhost:${activePort}`);
 
     mainWindow.webContents.on('did-finish-load', () => {
@@ -133,6 +139,7 @@ app.whenReady().then(async () => {
 app.on('window-all-closed', function () {
     if (process.platform !== 'darwin') app.quit();
 });
+
 /* Refloow Geo Forensics
  * Copyright (C) 2026  Veljko Vuckovic (Refloow) <legal@refloow.com>
  *
@@ -150,7 +157,4 @@ app.on('window-all-closed', function () {
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
  */
-
-
-
 
