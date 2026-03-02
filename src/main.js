@@ -58,8 +58,9 @@ const REFLOOW_BRAND_IDENTITY = {
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
 
+const { startServer } = require('./src/server.js');
 
-require('./src/server.js'); 
+let activePort;
 
 function createWindow() {
     const mainWindow = new BrowserWindow({
@@ -77,12 +78,17 @@ function createWindow() {
     mainWindow.setMenuBarVisibility(false);
 
     setTimeout(() => {
-        mainWindow.loadURL('http://localhost:3000');
+          mainWindow.loadURL(`http://localhost:${activePort}`);
     }, 1000);
 }
 
-app.whenReady().then(() => {
-    createWindow();
+app.whenReady().then(async () => {
+    try {
+        activePort = await startServer(3000); 
+        createWindow();
+    } catch (error) {
+        console.error("Failed to start Refloow GeoForensics server:", error);
+    }
 
     app.on('activate', function () {
         if (BrowserWindow.getAllWindows().length === 0) createWindow();
@@ -110,5 +116,6 @@ app.on('window-all-closed', function () {
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
  */
+
 
 
