@@ -57,17 +57,44 @@ const REFLOOW_BRAND_IDENTITY = {
 
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
-
 const { startServer } = require('./src/server.js');
 
+let mainWindow;
+let splashWindow;
 let activePort;
 
+
+// Splash screen
 function createWindow() {
-    const mainWindow = new BrowserWindow({
+    splashWindow = new BrowserWindow({
+        width: 450,
+        height: 350,
+        frame: false,
+        backgroundColor: '#121212', 
+        center: true,
+        show: false, // Don't show until ready to prevent flickering
+        webPreferences: {
+            nodeIntegration: false,
+            contextIsolation: true
+        }
+    });
+
+    // Aggressive Always-On-Top for Linux
+    splashWindow.setAlwaysOnTop(true, 'screen-saver'); 
+    splashWindow.setVisibleOnAllWorkspaces(true);
+    splashWindow.loadFile(path.join(__dirname, 'public', 'splash.html'));
+
+    // Show splash screen smoothly once it has loaded the HTML
+    splashWindow.once('ready-to-show', () => {
+        splashWindow.show();
+    });
+
+    // main window
+    mainWindow = new BrowserWindow({
         width: 1280,
         height: 800,
         title: "Refloow GeoForensics",
-        // Reminder add .ico for other distributions and other data in future version
+        show: false,
         backgroundColor: '#121212',
         webPreferences: {
             nodeIntegration: false,
@@ -77,9 +104,17 @@ function createWindow() {
 
     mainWindow.setMenuBarVisibility(false);
 
-    setTimeout(() => {
-          mainWindow.loadURL(`http://localhost:${activePort}`);
-    }, 1000);
+    mainWindow.loadURL(`http://localhost:${activePort}`);
+
+    mainWindow.webContents.on('did-finish-load', () => {
+        setTimeout(() => {
+            if (splashWindow && !splashWindow.isDestroyed()) {
+                splashWindow.close();
+            }
+            mainWindow.show();
+            mainWindow.focus(); // Focusing main window after splash dissapears
+        }, 1200); 
+    });
 }
 
 app.whenReady().then(async () => {
@@ -98,7 +133,6 @@ app.whenReady().then(async () => {
 app.on('window-all-closed', function () {
     if (process.platform !== 'darwin') app.quit();
 });
-
 /* Refloow Geo Forensics
  * Copyright (C) 2026  Veljko Vuckovic (Refloow) <legal@refloow.com>
  *
@@ -116,6 +150,7 @@ app.on('window-all-closed', function () {
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
  */
+
 
 
 
