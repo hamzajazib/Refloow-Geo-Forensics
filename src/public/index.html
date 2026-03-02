@@ -9,12 +9,15 @@
 </head>
 <body>
 
-    <header>
+<header>
         <div>
             <h1>Refloow GeoForensics</h1>
             <span class="subtitle">TOOL FOR GEOLOCATION OF EVIDENCE</span>
         </div>
-        <div style="font-size: 12px; color: #888;">Version 1.0.0</div>
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <button id="supportBtn" class="support-btn">Support & Info</button>
+            <div style="font-size: 12px; color: #888;">Version 1.0.0</div>
+        </div>
     </header>
 
     <div id="controls">
@@ -120,6 +123,72 @@
             } catch (e) {
                 console.error(e);
                 statusMsg.innerText = "There was an server error.";
+            }
+        }
+    </script>
+
+
+
+<div id="supportModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Support & Information</h2>
+            
+            <div class="modal-section">
+                <h3>Official Links</h3>
+                <ul>
+                    <li><a href="https://refloow.com" target="_blank">Website (refloow.com)</a></li>
+                    <li><a href="https://discord.com/invite/D8WCtDD" target="_blank">Discord Support Server</a></li>
+                    <li><a href="https://linktr.ee/Refloow" target="_blank">Linktree (all socials)</a></li>
+                    <li><a href="https://github.com/Refloow/Refloow-Geo-Forensics" target="_blank">GitHub Repository (leaving a free ⭐ helps my work and others find the software)</a></li>
+                    <li><a href="https://github.com/Refloow/Refloow-Geo-Forensics/issues" target="_blank">Report an Issue</a></li>
+                    <li><a href="https://refloow.com/open-source-software/refloow-geo-forensics" target="_blank">Read more about refloow geo forensics</a></li>
+                </ul>
+            </div>
+
+
+            <div class="modal-section">
+                <h3>Refloow Provides Many Free Open Source Tools</h3>
+                <ul>
+                    <li><a href="https://refloow.com/open-source-software" target="_blank">Discover all software projects</a></li>
+                </ul>
+            </div>
+
+            <div class="modal-section">
+                <h3>Credits & Open Source</h3>
+                <p>This software utilizes the following open-source technologies:</p>
+                <ul>
+                    <li><a href="https://leafletjs.com/" target="_blank">Leaflet</a> - Interactive Maps</li>
+                    <li><a href="https://www.npmjs.com/package/exif-parser" target="_blank">exif-parser</a> - EXIF Data Extraction</li>
+                    <li><a href="https://expressjs.com/" target="_blank">Express.js</a> - Local API & Routing</li>
+                </ul>
+            </div>
+            
+            <div class="modal-footer">
+                &copy; 2026 Refloow.com &copy; Veljko Vuckovic
+            </div>
+        </div>
+    </div>
+
+        <script>
+                // Modal
+  
+        const modal = document.getElementById("supportModal");
+        const supportBtn = document.getElementById("supportBtn");
+        const closeBtn = document.querySelector(".close-btn");
+
+        supportBtn.onclick = function() {
+            modal.style.display = "block";
+        }
+
+        closeBtn.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
             }
         }
     </script>
