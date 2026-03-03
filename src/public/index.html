@@ -52,7 +52,7 @@
             const statusMsg = document.getElementById('status-msg');
             const listDiv = document.getElementById('results-list');
 
-            if(!pathInput) { alert("Please enter a path!"); return; }
+            if(!pathInput) { showCustomAlert("Please enter a path to your evidence folder.", "Input Required"); return; }
 
             statusMsg.innerText = "Scaning in progress...";
             listDiv.innerHTML = "";
@@ -70,7 +70,8 @@
                 const result = await response.json();
 
                 if(!result.success) {
-                    statusMsg.innerText = "Error: " + result.error;
+                    statusMsg.innerText = "Scan failed.";
+                    showCustomAlert(result.error, "Scan Error");
                     return;
                 }
 
@@ -127,6 +128,13 @@
         }
     </script>
 
+<div id="customAlertModal" class="modal">
+        <div class="modal-content" style="max-width: 400px; text-align: center;">
+            <h2 id="customAlertTitle" style="color: #e94560;">Alert</h2>
+            <p id="customAlertMessage" style="font-size: 1.1em; margin-bottom: 25px;">Message goes here</p>
+            <button id="customAlertBtn" class="support-btn" style="width: 100%;">OK</button>
+        </div>
+</div>
 
 
 <div id="supportModal" class="modal">
@@ -189,6 +197,36 @@
         window.onclick = function(event) {
             if (event.target == modal) {
                 modal.style.display = "none";
+            }
+        }
+
+
+
+        // --- Custom Alert Logic ---
+        const alertModal = document.getElementById("customAlertModal");
+        const alertMessageEl = document.getElementById("customAlertMessage");
+        const alertTitleEl = document.getElementById("customAlertTitle");
+        const alertBtn = document.getElementById("customAlertBtn");
+
+        // Function to call instead of standard alert()
+        function showCustomAlert(message, title = "Notice") {
+            alertTitleEl.innerText = title;
+            alertMessageEl.innerText = message;
+            alertModal.style.display = "block";
+        }
+
+        // Close the alert when OK is clicked
+        alertBtn.onclick = function() {
+            alertModal.style.display = "none";
+        }
+
+        // Update the window click event to handle closing both modals if clicked outside
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+            if (event.target == alertModal) {
+                alertModal.style.display = "none";
             }
         }
     </script>
