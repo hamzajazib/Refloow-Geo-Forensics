@@ -110,3 +110,7 @@ This project is licensed under the **GNU Affero General Public License v3.0 (AGP
     <img src="https://img.shields.io/badge/Read_Full_Review-Dark_Web_Informer-CC0000?style=for-the-badge&logo=security&logoColor=white" alt="Read Review on Dark Web Informer">
   </a>
 </div>
+
+> Refloow Geo Forensics: A Free Batch Image Geolocation and EXIF Forensics Tool for OSINT
+> 
+> — **[osintteam.blog curated list of tools](https://osintteam.blog/osint-related-articles-20260216-10fa2f9b4a31)** (Feb 2026)
