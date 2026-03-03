@@ -67,15 +67,18 @@ function formatTime(timestamp) {
 
 function scanDirectory(dirPath) {
     let results = [];
+
+    // Normalize the path for the current OS (Linux/Windows)
+    const normalizedPath = path.resolve(dirPath.trim());
     
-    if (!fs.existsSync(dirPath)) {
+if (!fs.existsSync(normalizedPath)) {
         throw new Error("Folder doesnt exist or path is not valid");
     }
 
-    const files = fs.readdirSync(dirPath);
+    const files = fs.readdirSync(normalizedPath);
 
     files.forEach(file => {
-        const fullPath = path.join(dirPath, file);
+        const fullPath = path.join(normalizedPath, file);
         
         if (file.toLowerCase().endsWith('.jpg') || file.toLowerCase().endsWith('.jpeg')) {
             try {
