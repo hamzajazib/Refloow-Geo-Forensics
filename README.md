@@ -80,7 +80,7 @@ This project is licensed under the **GNU Affero General Public License v3.0 (AGP
 1.  **Clone the Repository**
     ```bash
     git clone [https://github.com/Refloow/Refloow-Geo-Forensics.git](https://github.com/Refloow/Refloow-Geo-Forensics.git)
-    cd Refloow-Geo-Forensics
+    cd Refloow-Geo-Forensics/src
     ```
 
 2.  **Install Dependencies**
