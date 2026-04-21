@@ -55,9 +55,13 @@ const REFLOOW_BRAND_IDENTITY = {
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog } = require('electron');
+const { autoUpdater } = require('electron-updater');
 const path = require('path');
 const { startServer } = require('./src/server.js');
+
+// Prevent automatic downloads
+autoUpdater.autoDownload = false
 
 let mainWindow;
 let splashWindow;
@@ -75,7 +79,7 @@ function createWindow() {
         show: false, // Don't show until ready to prevent flickering
         webPreferences: {
             nodeIntegration: false,
-            contextIsolation: true
+            contextIsolation: true,
         }
     });
 
@@ -98,7 +102,8 @@ function createWindow() {
         backgroundColor: '#121212',
         webPreferences: {
             nodeIntegration: false,
-            contextIsolation: true
+            contextIsolation: true,
+            preload: path.join(__dirname, 'preload.js')
         }
     });
 
@@ -123,6 +128,61 @@ function createWindow() {
     });
 }
 
+// Listen for the frontend telling us to check for updates
+ipcMain.on('check-updates', (event, autoUpdateEnabled) => {
+    if (autoUpdateEnabled === 'true') {
+        autoUpdater.checkForUpdates().catch(err => {
+            dialog.showErrorBox("Check Promise Error", err.toString());
+        });
+    }
+});
+
+
+// Tells if GitHub was checked but no update was found
+autoUpdater.on('update-not-available', (info) => {
+    dialog.showMessageBox({ 
+        type: 'info', 
+        title: 'Debug: No Update Found', 
+        message: `GitHub was checked, but no update was found. Local version: ${app.getVersion()}. Cloud version: ${info.version}` 
+    });
+});
+
+// Tells if there is a hash mismatch or network failure
+autoUpdater.on('error', (err) => {
+    dialog.showErrorBox("Updater Error", "An error occurred:\n" + err.toString());
+});
+
+// ---------------------------
+
+// Update Available - Ask User to Upgrade
+autoUpdater.on('update-available', async (info) => {
+    const { response } = await dialog.showMessageBox({
+        type: 'info',
+        title: 'Update Available',
+        message: `Version ${info.version} of Refloow GeoForensics is available. Would you like to download and install it?`,
+        buttons: ['Yes, Upgrade', 'No, Cancel']
+    });
+
+    if (response === 0) { // User clicked 'Yes'
+        autoUpdater.downloadUpdate();
+    }
+});
+
+// Update Downloaded - Ask User to Restart
+autoUpdater.on('update-downloaded', async () => {
+    const { response } = await dialog.showMessageBox({
+        type: 'info',
+        title: 'Update Ready',
+        message: 'The update has been downloaded. Restart the application to apply the changes?',
+        buttons: ['Restart Now', 'Later']
+    });
+
+    if (response === 0) {
+        // Parameter 1: isSilent = true (Runs the installer in the background without the wizard)
+        // Parameter 2: isForceRunAfter = true (Automatically re-opens the app when finished)
+        autoUpdater.quitAndInstall(true, true);
+    }
+});
 app.whenReady().then(async () => {
     try {
         activePort = await startServer(3000); 
