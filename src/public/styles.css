@@ -321,3 +321,46 @@ body.light-theme .close-btn {
 body.light-theme .close-btn:hover {
     color: #e94560;
 }
+
+/* =========================================
+   IMAGE PREVIEW STYLES
+   ========================================= */
+.evidence-item {
+    background-color: #0f3460;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    border-left: 4px solid #e94560;
+    transition: 0.2s;
+    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.evidence-info {
+    flex: 1;
+    overflow: hidden;
+}
+
+.evidence-thumbnail {
+    width: 55px;
+    height: 55px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-left: 10px;
+    border: 1px solid #16213e;
+}
+
+.popup-thumbnail {
+    width: 100%;
+    max-height: 140px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-bottom: 8px;
+}
+
+body.light-theme .evidence-thumbnail {
+    border: 1px solid #cccccc;
+}
