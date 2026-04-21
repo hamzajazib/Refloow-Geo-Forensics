@@ -89,6 +89,7 @@ if (!fs.existsSync(normalizedPath)) {
                 if (result.tags && result.tags.GPSLatitude && result.tags.GPSLongitude) {
                     results.push({
                         name: file,
+                        fullPath: fullPath,
                         lat: result.tags.GPSLatitude,
                         lon: result.tags.GPSLongitude,
                         time: formatTime(result.tags.DateTimeOriginal),
