@@ -138,6 +138,7 @@ ipcMain.on('check-updates', (event, autoUpdateEnabled) => {
 });
 
 
+/*
 // Tells if GitHub was checked but no update was found
 autoUpdater.on('update-not-available', (info) => {
     dialog.showMessageBox({ 
@@ -146,6 +147,7 @@ autoUpdater.on('update-not-available', (info) => {
         message: `GitHub was checked, but no update was found. Local version: ${app.getVersion()}. Cloud version: ${info.version}` 
     });
 });
+*/
 
 // Tells if there is a hash mismatch or network failure
 autoUpdater.on('error', (err) => {
