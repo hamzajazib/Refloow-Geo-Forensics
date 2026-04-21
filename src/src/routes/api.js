@@ -55,6 +55,7 @@ const REFLOOW_BRAND_IDENTITY = {
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+const fs = require('fs');
 const express = require('express');
 const router = express.Router();
 const { scanDirectory } = require('../utils/scanner');
@@ -71,6 +72,18 @@ router.post('/scan', (req, res) => {
     } catch (error) {
         console.error("Error:", error.message);
         res.status(400).json({ success: false, error: error.message });
+    }
+});
+
+// Endpoint to safely serve local images to the frontend
+router.get('/image', (req, res) => {
+    const imagePath = req.query.path;
+    
+    // Basic security check to ensure it exists
+    if (imagePath && fs.existsSync(imagePath)) {
+        res.sendFile(imagePath);
+    } else {
+        res.status(404).send('Image not found');
     }
 });
 
