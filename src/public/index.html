@@ -97,13 +97,30 @@
 
           let latlngs = [];
 
+// Check if user wants images loaded
+          const showPreviews = localStorage.getItem("imagePreviews") === "true";
+
           data.forEach((item) => {
+            let previewHtmlMap = '';
+            let previewHtmlSidebar = '';
+            
+            // If enabled, point the image source to our new secure Express route
+            if (showPreviews) {
+                const encodedPath = encodeURIComponent(item.fullPath);
+                const imgSrc = `/api/image?path=${encodedPath}`;
+                previewHtmlMap = `<img src="${imgSrc}" class="popup-thumbnail" alt="Preview">`;
+                previewHtmlSidebar = `<img src="${imgSrc}" class="evidence-thumbnail" alt="Preview">`;
+            }
+
             const marker = L.marker([item.lat, item.lon]).addTo(map);
 
             const popupContent = `
-                        <b>File:</b> ${item.name}<br>
-                        <b>Time:</b> ${item.time}<br>
-                        <b>Device:</b> ${item.camera}
+                        ${previewHtmlMap}
+                        <div style="font-size: 13px;">
+                            <b>File:</b> ${item.name}<br>
+                            <b>Time:</b> ${item.time}<br>
+                            <b>Device:</b> ${item.camera}
+                        </div>
                     `;
 
             marker.bindPopup(popupContent);
@@ -112,10 +129,15 @@
 
             const div = document.createElement("div");
             div.className = "evidence-item";
+            
+            // Reorganized HTML to wrap text in .evidence-info and append the thumbnail
             div.innerHTML = `
-                        <span class="evidence-name">${item.name}</span>
-                        <div class="evidence-meta">📅 ${item.time}</div>
-                        <div class="evidence-meta">📱 ${item.camera}</div>
+                        <div class="evidence-info">
+                            <span class="evidence-name">${item.name}</span>
+                            <div class="evidence-meta">📅 ${item.time}</div>
+                            <div class="evidence-meta">📱 ${item.camera}</div>
+                        </div>
+                        ${previewHtmlSidebar}
                     `;
             div.onclick = () => {
               map.flyTo([item.lat, item.lon], 15);
@@ -123,6 +145,7 @@
             };
             listDiv.appendChild(div);
           });
+
 
           if (latlngs.length > 0) {
             const bounds = L.latLngBounds(latlngs);
@@ -212,6 +235,17 @@
             Optimizes visibility for bright environments and direct sunlight.
           </p>
         </div>
+
+        <div class="modal-section">
+          <h3>Performance & Media</h3>
+          <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+            <input type="checkbox" id="previewToggle" style="width: 18px; height: 18px;" />
+            Enable Image Previews
+          </label>
+          <p style="font-size: 0.9em; color: #888; margin-top: 5px;">
+            Displays thumbnails in the map and sidebar. <b>Note:</b> May throttle performance during large bulk operations.
+          </p>
+        </div>
       </div>
     </div>
 
@@ -223,6 +257,7 @@
       const closeSettingsBtn = document.querySelector(".close-settings-btn");
       const autoUpdateToggle = document.getElementById("autoUpdateToggle");
       const themeToggle = document.getElementById("themeToggle");
+      const previewToggle = document.getElementById("previewToggle");
 
       settingsBtn.onclick = function () {
         settingsModal.style.display = "block";
@@ -260,6 +295,9 @@
         const isAutoUpdateEnabled = localStorage.getItem("autoUpdate") !== "false";
         autoUpdateToggle.checked = isAutoUpdateEnabled;
 
+        const isPreviewEnabled = localStorage.getItem("imagePreviews") === "true";
+        previewToggle.checked = isPreviewEnabled;
+
         // Trigger update check on boot
         if (window.electronAPI) {
           window.electronAPI.triggerUpdateCheck(isAutoUpdateEnabled ? "true" : "false");
@@ -275,6 +313,11 @@
         const isChecked = e.target.checked;
         localStorage.setItem("lightMode", isChecked ? "true" : "false");
         applyTheme(isChecked);
+      });
+
+      // Listen for Preview Toggle
+      previewToggle.addEventListener("change", (e) => {
+        localStorage.setItem("imagePreviews", e.target.checked ? "true" : "false");
       });
 
       // Listen for user toggling the setting
