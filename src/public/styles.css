@@ -118,6 +118,7 @@ button:hover {
 }
 
 .evidence-name {
+    color: #d0d0d0;
     font-weight: bold;
     font-size: 14px;
     margin-bottom: 5px;
