@@ -29,14 +29,11 @@
 * **Multi system support:** Available on Windows, Linux & MacOS
 
 ---
-App UI - previews enabled satelite map layer
-<img width="1916" height="1032" alt="image" src="https://github.com/user-attachments/assets/d6d5fc02-8327-4804-8abb-1e82ba206837" />
-App UI - previews disabled (max performance)
-<img width="1916" height="1023" alt="image" src="https://github.com/user-attachments/assets/58530242-98de-448e-ab0f-963a130766c9" />
-App UI - previews & light mode enabled
-<img width="1914" height="1031" alt="image" src="https://github.com/user-attachments/assets/c20a86df-30b6-456d-bcf9-4989a58677d0" />
-App UI - previews disabled & light mode enabled - standard street map
-<img width="1916" height="1033" alt="image" src="https://github.com/user-attachments/assets/4c01d326-40c8-4841-9b83-ba6e8535cfcc" />
+| App UI - Previews Enabled (Satellite Map) | App UI - Previews Disabled (Max Performance) |
+| :---: | :---: |
+| <img src="https://github.com/user-attachments/assets/d6d5fc02-8327-4804-8abb-1e82ba206837" alt="Previews enabled satellite map layer" /> | <img src="https://github.com/user-attachments/assets/58530242-98de-448e-ab0f-963a130766c9" alt="Previews disabled max performance" /> |
+| **App UI - Previews & Light Mode Enabled** | **App UI - Light Mode (Standard Street Map)** |
+| <img src="https://github.com/user-attachments/assets/c20a86df-30b6-456d-bcf9-4989a58677d0" alt="Previews & light mode enabled" /> | <img src="https://github.com/user-attachments/assets/4c01d326-40c8-4841-9b83-ba6e8535cfcc" alt="Previews disabled & light mode enabled standard street map" /> |
 
 
 
