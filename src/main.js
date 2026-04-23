@@ -137,6 +137,9 @@ ipcMain.on('check-updates', (event, autoUpdateEnabled) => {
     }
 });
 
+ipcMain.handle('get-app-version', () => {
+    return app.getVersion();
+});
 
 /*
 // Tells if GitHub was checked but no update was found
