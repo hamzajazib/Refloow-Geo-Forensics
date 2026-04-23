@@ -479,3 +479,36 @@ body.light-theme .leaflet-bar a.leaflet-disabled {
     color: #bbbbbb !important;
     background-color: #f9f9f9 !important;
 }
+
+/* =========================================
+   LEAFLET ATTRIBUTION THEMING
+   ========================================= */
+
+.leaflet-control-attribution {
+    background-color: rgba(22, 33, 62, 0.85) !important; 
+    color: #a0a0a0 !important;
+    border-top-left-radius: 4px; 
+}
+
+.leaflet-control-attribution a {
+    color: #d0d0d0 !important;
+    text-decoration: none;
+}
+
+.leaflet-control-attribution a:hover {
+    color: #e94560 !important; 
+}
+
+
+body.light-theme .leaflet-control-attribution {
+    background-color: rgba(255, 255, 255, 0.85) !important;
+    color: #333333 !important;
+}
+
+body.light-theme .leaflet-control-attribution a {
+    color: #0056b3 !important; 
+}
+
+body.light-theme .leaflet-control-attribution a:hover {
+    color: #e94560 !important;
+}
