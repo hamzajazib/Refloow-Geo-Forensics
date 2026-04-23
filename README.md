@@ -29,12 +29,15 @@
 * **Multi system support:** Available on Windows, Linux & MacOS
 
 ---
-App UI - previews disabled (max performance) - zoomed in
-<img width="2557" height="1348" alt="image" src="https://github.com/user-attachments/assets/5fa524f3-7df9-4a7e-b37d-132af693eb0c" />
-App UI - previews enabled - zoomed out
-<img width="2551" height="1341" alt="image" src="https://github.com/user-attachments/assets/25bc7656-8644-4917-adcc-ae92ce82e69d" />
+App UI - previews enabled satelite map layer
+<img width="1916" height="1032" alt="image" src="https://github.com/user-attachments/assets/d6d5fc02-8327-4804-8abb-1e82ba206837" />
+App UI - previews disabled (max performance)
+<img width="1916" height="1023" alt="image" src="https://github.com/user-attachments/assets/58530242-98de-448e-ab0f-963a130766c9" />
 App UI - previews & light mode enabled
-<img width="2556" height="1352" alt="image" src="https://github.com/user-attachments/assets/201a197a-6f08-4ca4-ba5f-5168786eb509" />
+<img width="1914" height="1031" alt="image" src="https://github.com/user-attachments/assets/c20a86df-30b6-456d-bcf9-4989a58677d0" />
+App UI - previews disabled & light mode enabled - standard street map
+<img width="1916" height="1033" alt="image" src="https://github.com/user-attachments/assets/4c01d326-40c8-4841-9b83-ba6e8535cfcc" />
+
 
 
 ## 💻 System Requirements & Technical Specs
