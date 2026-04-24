@@ -7,6 +7,17 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <link rel="stylesheet" href="styles.css" />
   </head>
+
+<div id="custom-title-bar">
+      <div class="title-buttons" style="-webkit-app-region: no-drag;">
+        <img src="Refloow-Geo-Forensics.png" alt="Refloow Icon" class="title-icon">
+        <button id="discordBtn" class="title-btn" onclick="window.open('https://discord.com/invite/D8WCtDD', '_blank')">Support</button>
+        <button id="donationBtn" class="title-btn">Donations</button>
+      </div>
+      
+      <div class="title-drag-area" style="-webkit-app-region: drag;"></div>
+</div>
+
   <body>
     <header>
       <div>
@@ -32,6 +43,8 @@
       </div>
       <div id="map"></div>
     </div>
+
+    <div id="toast" class="toast-hidden">Address copied to clipboard!</div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
@@ -224,6 +237,37 @@ var map = L.map("map", {
           statusMsg.innerText = "There was an server error.";
         }
       }
+
+
+      // --- Clipboard & Toast Logic ---
+      let toastTimeout;
+
+      function copyToClipboard(inputElement) {
+        // Visually selecst the text so the user knows what they clicked
+        inputElement.select();
+
+        // Uses the modern cross-platform Chromium Clipboard API for cross platform support linux macOs n windows
+        navigator.clipboard.writeText(inputElement.value).then(() => {
+            showToast("Address copied to clipboard!");
+        }).catch(err => {
+            console.error("Failed to copy text: ", err);
+            showToast("Failed to copy!");
+        });
+      }
+
+      function showToast(message) {
+        const toast = document.getElementById("toast");
+        toast.innerText = message;
+        toast.classList.add("show");
+
+        // Clear any existing timeout so rapid clicks don't glitch the animation
+        clearTimeout(toastTimeout);
+
+        // Hide the toast automatically after 2.5 seconds
+        toastTimeout = setTimeout(() => {
+            toast.classList.remove("show");
+        }, 2500);
+      }
     </script>
 
     <div id="customAlertModal" class="modal">
@@ -251,6 +295,8 @@ var map = L.map("map", {
           </ul>
         </div>
 
+  
+
         <div class="modal-section">
           <h3>Refloow Provides Many Free Open Source Tools</h3>
           <ul>
@@ -271,6 +317,60 @@ var map = L.map("map", {
         <div class="modal-footer">
           &copy; 2026 Refloow.com &copy; Veljko Vuckovic
         </div>
+      </div>
+    </div>
+
+
+          <div id="donationModal" class="modal">
+      <div class="modal-content" style="max-width: 680px;">
+        <span class="close-donation-btn close-btn">&times;</span>
+        <h2 style="color: #e94560; margin-bottom: 10px;">Support Development</h2>
+        <p style="font-size: 0.95em; color: #a0a0a0; margin-bottom: 25px;">
+          Refloow Geo Forensics is completely free and open-source. If this tool has assisted your investigations, consider supporting future updates!
+        </p>
+
+        <div class="crypto-row">
+          <span class="crypto-label">Bitcoin (BTC)</span>
+          <input type="text" class="crypto-input" value="bc1qay2l04mmqhztq8mj7usjlff22ay6a37x9pl9uk" readonly onclick="copyToClipboard(this)">
+        </div>
+
+        <div class="crypto-row">
+          <span class="crypto-label">Ethereum, Polygon & Arbitrum (ETH, POL, ARB or Any Stablecoins)</span>
+          <input type="text" class="crypto-input" value="0xFD531dc8e3E78C57212F303f684f5A2aD312f7ca" readonly onclick="copyToClipboard(this)">
+        </div>
+
+        <div class="crypto-row">
+          <span class="crypto-label">Solana (SOL) or any stablecoins</span>
+          <input type="text" class="crypto-input" value="8LFVByQUKJVGnBBoAso9KqCbUnFtm875gMkumMRNnEZ2" readonly onclick="copyToClipboard(this)">
+        </div>
+
+        <div class="crypto-row">
+          <span class="crypto-label">Tron (TRX) or stablecoins</span>
+          <input type="text" class="crypto-input" value="TMEeyojQaC6HXBww7FGQKkF1ZcDeUr3esW" readonly onclick="copyToClipboard(this)">
+        </div>
+        
+        <div class="crypto-row">
+          <span class="crypto-label">Kaspa (KAS)</span>
+          <input type="text" class="crypto-input" value="kaspa:qrzd6vvd9h32cxr776l5vx3q94uyyp9wp7fjs36qjx3hltldxz0kwh9qy9hak" readonly onclick="copyToClipboard(this)">
+        </div>
+
+        <!---
+        <div class="crypto-row">
+          <span class="crypto-label">Monero (XMR)</span>
+          <input type="text" class="crypto-input" value="xmr_address_ones_available" readonly onclick="copyToClipboard(this)">
+        </div>
+        --->
+
+        <div class="crypto-row">
+          <span class="crypto-label">Litecoin (LTC)</span>
+          <input type="text" class="crypto-input" value="ltc1qvrhhgvyhl7f08r9pmchnzzfhgffuzwzqfpr3hm" readonly onclick="copyToClipboard(this)">
+        </div>
+
+        <div class="crypto-row">
+          <span class="crypto-label">Bitcoin Cash (BCH)</span>
+          <input type="text" class="crypto-input" value="qqe99z466a8wdknxvxkcw60p72ddhkg2lvfuh9jqzz" readonly onclick="copyToClipboard(this)">
+        </div>
+
       </div>
     </div>
 
@@ -323,6 +423,10 @@ var map = L.map("map", {
       const previewToggle = document.getElementById("previewToggle");
       const mapPrecisionToggle = document.getElementById("mapPrecisionToggle");
 
+      const donationModal = document.getElementById("donationModal");
+      const donationBtn = document.getElementById("donationBtn");
+      const closeDonationBtn = document.querySelector(".close-donation-btn");
+
 
       function applyZoomSettings(isPrecision) {
         map.scrollWheelZoom.disable();
@@ -348,6 +452,14 @@ var map = L.map("map", {
         settingsModal.style.display = "none";
       };
 
+      donationBtn.onclick = function () {
+        donationModal.style.display = "block";
+      };
+
+      closeDonationBtn.onclick = function () {
+        donationModal.style.display = "none";
+      };
+
 
       function applyTheme(isLight) {
         if (isLight) {
@@ -366,6 +478,12 @@ var map = L.map("map", {
           window.electronAPI.getAppVersion().then(version => {
               document.getElementById("appVersionDisplay").innerText = `Version ${version}`;
           });
+      }
+
+      // If os is macOS apply css class to push the titlebar buttons on the side making space for macos traffic lights...
+      if (window.electronAPI && window.electronAPI.getPlatform) {
+          const platform = window.electronAPI.getPlatform();
+          document.body.classList.add(`os-${platform}`);
       }
 
         // Check localStorage (default to true if not set)
@@ -467,6 +585,9 @@ var map = L.map("map", {
         }
         if (event.target == settingsModal) {
           settingsModal.style.display = "none";
+        }
+        if (event.target == donationModal) {
+          donationModal.style.display = "none";
         }
       };
     </script>
