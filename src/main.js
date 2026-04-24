@@ -97,6 +97,12 @@ function createWindow() {
     mainWindow = new BrowserWindow({
         width: 1280,
         height: 800,
+        titleBarStyle: 'hidden',
+        titleBarOverlay: {
+            color: '#181818', 
+            symbolColor: '#d0d0d0',
+            height: 35 
+        },
         title: "Refloow GeoForensics",
         show: false,
         backgroundColor: '#121212',
