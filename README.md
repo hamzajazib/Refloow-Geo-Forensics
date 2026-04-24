@@ -78,6 +78,40 @@ This project is licensed under the **GNU Affero General Public License v3.0 (AGP
 * **Official community discord:** [link](https://discord.com/invite/D8WCtDD)
 ---
 
+## ☕ Support the Project
+
+Refloow Geo Forensics is completely free, open-source. If this tool has saved you time during an investigation or helped your workflow, consider supporting future updates!
+
+**Cryptocurrency Addresses:**
+
+* **Bitcoin (BTC):**
+    ```text
+    bc1qay2l04mmqhztq8mj7usjlff22ay6a37x9pl9uk
+    ```
+* **Ethereum, Polygon & Arbitrum (ETH, POL, ARB or Any Stablecoins):**
+    ```text
+    0xFD531dc8e3E78C57212F303f684f5A2aD312f7ca
+    ```
+* **Solana (SOL or Stables):**
+    ```text
+    8LFVByQUKJVGnBBoAso9KqCbUnFtm875gMkumMRNnEZ2
+    ```
+* **Tron (TRX or Stables):**
+    ```text
+    TMEeyojQaC6HXBww7FGQKkF1ZcDeUr3esW
+    ```
+* **Kaspa (KAS):**
+    ```text
+    kaspa:qrzd6vvd9h32cxr776l5vx3q94uyyp9wp7fjs36qjx3hltldxz0kwh9qy9hak
+    ```
+* **Litecoin (LTC):**
+    ```text
+    ltc1qvrhhgvyhl7f08r9pmchnzzfhgffuzwzqfpr3hm
+    ```
+* **Bitcoin Cash (BCH):**
+    ```text
+    qqe99z466a8wdknxvxkcw60p72ddhkg2lvfuh9jqzz
+    ```
 
 ## For contributors and developers
 
