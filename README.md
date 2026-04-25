@@ -104,6 +104,10 @@ Refloow Geo Forensics is completely free, open-source. If this tool has saved yo
     ```text
     kaspa:qrzd6vvd9h32cxr776l5vx3q94uyyp9wp7fjs36qjx3hltldxz0kwh9qy9hak
     ```
+* **Monero (XMR):**
+    ```text
+    46Aff9taPnbDqdkbSJ8rAzWqAyuKugt3b87irbcUcbLiSkgPff1YFRW3SRoLJtaA4sQhFTbdy7VFa97LpN4yhXRp3vz9vnj
+    ```
 * **Litecoin (LTC):**
     ```text
     ltc1qvrhhgvyhl7f08r9pmchnzzfhgffuzwzqfpr3hm
