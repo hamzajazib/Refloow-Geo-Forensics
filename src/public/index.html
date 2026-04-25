@@ -8,15 +8,15 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
 
-<div id="custom-title-bar">
-      <div class="title-buttons" style="-webkit-app-region: no-drag;">
-        <img src="Refloow-Geo-Forensics.png" alt="Refloow Icon" class="title-icon">
-        <button id="discordBtn" class="title-btn" onclick="window.open('https://discord.com/invite/D8WCtDD', '_blank')">Support</button>
-        <button id="donationBtn" class="title-btn">Donations</button>
-      </div>
-      
-      <div class="title-drag-area" style="-webkit-app-region: drag;"></div>
-</div>
+  <div id="custom-title-bar">
+    <div class="title-buttons" style="-webkit-app-region: no-drag;">
+      <img src="Refloow-Geo-Forensics.png" alt="Refloow Icon" class="title-icon" />
+      <button id="discordBtn" class="title-btn" onclick="window.open('https://discord.com/invite/D8WCtDD', '_blank')">Support</button>
+      <button id="donationBtn" class="title-btn">Donations</button>
+    </div>
+
+    <div class="title-drag-area" style="-webkit-app-region: drag;"></div>
+  </div>
 
   <body>
     <header>
@@ -31,9 +31,9 @@
       </div>
     </header>
 
-<div id="controls" style="display: flex; gap: 10px; align-items: center;">
+    <div id="controls" style="display: flex; gap: 10px; align-items: center;">
       <input type="text" id="folderPath" style="flex-grow: 1;" placeholder="Enter full path to the folder with images (example: windows: C:\Users\User\Desktop\Images or linux: C:\Images)" />
-      
+
       <button id="browseBtn" class="browse-btn" onclick="browseFolder()">Browse Folder</button>
       <button id="analyseBtn" class="analyse-btn" onclick="startScan()">Analyze</button>
     </div>
@@ -51,9 +51,9 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
     <script>
-var map = L.map("map", {
-    zoomSnap: 0.1 
-}).setView([0, 0], 3);
+      var map = L.map("map", {
+        zoomSnap: 0.1,
+      }).setView([0, 0], 3);
       map.attributionControl.setPrefix(false);
 
       const cartoDark = L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
@@ -116,7 +116,7 @@ var map = L.map("map", {
 
       // --- Custom Precision Zoom Control ---
       L.Control.ZoomMode = L.Control.extend({
-        options: {position: "bottomleft"}, 
+        options: {position: "bottomleft"},
         onAdd: function (map) {
           const container = L.DomUtil.create("div", "zoom-sensitivity-control");
           container.innerHTML = `
@@ -244,7 +244,6 @@ var map = L.map("map", {
         }
       }
 
-
       // --- Clipboard & Toast Logic ---
       let toastTimeout;
 
@@ -253,23 +252,26 @@ var map = L.map("map", {
         inputElement.select();
 
         // Uses the modern cross-platform Chromium Clipboard API for cross platform support linux macOs n windows
-        navigator.clipboard.writeText(inputElement.value).then(() => {
+        navigator.clipboard
+          .writeText(inputElement.value)
+          .then(() => {
             showToast("Address copied to clipboard!");
-        }).catch(err => {
+          })
+          .catch((err) => {
             console.error("Failed to copy text: ", err);
             showToast("Failed to copy!");
-        });
+          });
       }
 
       function showToast(message, isError = false) {
         const toast = document.getElementById("toast");
         toast.innerText = message;
-        
+
         // Toggle the red error class based on the outcome
         if (isError) {
-            toast.classList.add("toast-error");
+          toast.classList.add("toast-error");
         } else {
-            toast.classList.remove("toast-error");
+          toast.classList.remove("toast-error");
         }
 
         toast.classList.add("show");
@@ -279,7 +281,7 @@ var map = L.map("map", {
 
         // Hide the toast automatically after 2.5 seconds
         toastTimeout = setTimeout(() => {
-            toast.classList.remove("show");
+          toast.classList.remove("show");
         }, 2500);
       }
     </script>
@@ -294,7 +296,7 @@ var map = L.map("map", {
 
     <div id="supportModal" class="modal">
       <div class="modal-content">
-        <span class="close-btn">&times;</span>
+        <span id="closeSupportBtn" class="close-btn">&times;</span>
         <h2>Support & Information</h2>
 
         <div class="modal-section">
@@ -309,8 +311,6 @@ var map = L.map("map", {
           </ul>
         </div>
 
-  
-
         <div class="modal-section">
           <h3>Refloow Provides Many Free Open Source Tools</h3>
           <ul>
@@ -318,14 +318,9 @@ var map = L.map("map", {
           </ul>
         </div>
 
-        <div class="modal-section">
-          <h3>Credits & Open Source</h3>
-          <p>This software utilizes the following open-source technologies:</p>
-          <ul>
-            <li><a href="https://leafletjs.com/" target="_blank">Leaflet</a> - Interactive Maps</li>
-            <li><a href="https://www.npmjs.com/package/exif-parser" target="_blank">exif-parser</a> - EXIF Data Extraction</li>
-            <li><a href="https://expressjs.com/" target="_blank">Express.js</a> - Local API & Routing</li>
-          </ul>
+        <div class="modal-section" style="border-top: 1px solid #2a3a60; padding-top: 20px; margin-top: 20px;">
+          <button id="openDonationsFromSupportBtn" class="analyse-btn" style="width: 100%; margin-bottom: 10px;">☕ Support Development (Donations)</button>
+          <button id="openCreditsBtn" class="browse-btn" style="width: 100%;">📜 Open Source Credits</button>
         </div>
 
         <div class="modal-footer">
@@ -334,8 +329,25 @@ var map = L.map("map", {
       </div>
     </div>
 
+    <div id="creditsModal" class="modal">
+      <div class="modal-content">
+        <span id="closeCreditsBtn" class="close-btn">&times;</span>
+        <h2>Open Source Credits</h2>
 
-          <div id="donationModal" class="modal">
+        <div class="modal-section">
+          <p style="font-size: 0.95em; color: #a0a0a0; margin-bottom: 15px;">
+            This software is built on the shoulders of giants. Thank you to the creators and maintainers of the following open-source technologies:
+          </p>
+          <ul>
+            <li><a href="https://leafletjs.com/" target="_blank">Leaflet</a> - Interactive Maps</li>
+            <li><a href="https://www.npmjs.com/package/exif-parser" target="_blank">exif-parser</a> - EXIF Data Extraction</li>
+            <li><a href="https://expressjs.com/" target="_blank">Express.js</a> - Local API & Routing</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div id="donationModal" class="modal">
       <div class="modal-content" style="max-width: 950px;">
         <span class="close-donation-btn close-btn">&times;</span>
         <h2 style="color: #e94560; margin-bottom: 10px;">Support Development</h2>
@@ -345,45 +357,43 @@ var map = L.map("map", {
 
         <div class="crypto-row">
           <span class="crypto-label">Bitcoin (BTC)</span>
-          <input type="text" class="crypto-input" value="bc1qay2l04mmqhztq8mj7usjlff22ay6a37x9pl9uk" readonly onclick="copyToClipboard(this)">
+          <input type="text" class="crypto-input" value="bc1qay2l04mmqhztq8mj7usjlff22ay6a37x9pl9uk" readonly onclick="copyToClipboard(this)" />
         </div>
 
         <div class="crypto-row">
           <span class="crypto-label">Ethereum, Polygon & Arbitrum (ETH, POL, ARB or Any Stablecoins)</span>
-          <input type="text" class="crypto-input" value="0xFD531dc8e3E78C57212F303f684f5A2aD312f7ca" readonly onclick="copyToClipboard(this)">
+          <input type="text" class="crypto-input" value="0xFD531dc8e3E78C57212F303f684f5A2aD312f7ca" readonly onclick="copyToClipboard(this)" />
         </div>
 
         <div class="crypto-row">
           <span class="crypto-label">Solana (SOL) or any stablecoins</span>
-          <input type="text" class="crypto-input" value="8LFVByQUKJVGnBBoAso9KqCbUnFtm875gMkumMRNnEZ2" readonly onclick="copyToClipboard(this)">
+          <input type="text" class="crypto-input" value="8LFVByQUKJVGnBBoAso9KqCbUnFtm875gMkumMRNnEZ2" readonly onclick="copyToClipboard(this)" />
         </div>
 
         <div class="crypto-row">
           <span class="crypto-label">Tron (TRX) or stablecoins</span>
-          <input type="text" class="crypto-input" value="TMEeyojQaC6HXBww7FGQKkF1ZcDeUr3esW" readonly onclick="copyToClipboard(this)">
-        </div>
-        
-        <div class="crypto-row">
-          <span class="crypto-label">Kaspa (KAS)</span>
-          <input type="text" class="crypto-input" value="kaspa:qrzd6vvd9h32cxr776l5vx3q94uyyp9wp7fjs36qjx3hltldxz0kwh9qy9hak" readonly onclick="copyToClipboard(this)">
+          <input type="text" class="crypto-input" value="TMEeyojQaC6HXBww7FGQKkF1ZcDeUr3esW" readonly onclick="copyToClipboard(this)" />
         </div>
 
+        <div class="crypto-row">
+          <span class="crypto-label">Kaspa (KAS)</span>
+          <input type="text" class="crypto-input" value="kaspa:qrzd6vvd9h32cxr776l5vx3q94uyyp9wp7fjs36qjx3hltldxz0kwh9qy9hak" readonly onclick="copyToClipboard(this)" />
+        </div>
 
         <div class="crypto-row">
           <span class="crypto-label">Monero (XMR)</span>
-          <input type="text" class="crypto-input" value="46Aff9taPnbDqdkbSJ8rAzWqAyuKugt3b87irbcUcbLiSkgPff1YFRW3SRoLJtaA4sQhFTbdy7VFa97LpN4yhXRp3vz9vnj" readonly onclick="copyToClipboard(this)">
+          <input type="text" class="crypto-input" value="46Aff9taPnbDqdkbSJ8rAzWqAyuKugt3b87irbcUcbLiSkgPff1YFRW3SRoLJtaA4sQhFTbdy7VFa97LpN4yhXRp3vz9vnj" readonly onclick="copyToClipboard(this)" />
         </div>
 
         <div class="crypto-row">
           <span class="crypto-label">Litecoin (LTC)</span>
-          <input type="text" class="crypto-input" value="ltc1qvrhhgvyhl7f08r9pmchnzzfhgffuzwzqfpr3hm" readonly onclick="copyToClipboard(this)">
+          <input type="text" class="crypto-input" value="ltc1qvrhhgvyhl7f08r9pmchnzzfhgffuzwzqfpr3hm" readonly onclick="copyToClipboard(this)" />
         </div>
 
         <div class="crypto-row">
           <span class="crypto-label">Bitcoin Cash (BCH)</span>
-          <input type="text" class="crypto-input" value="qqe99z466a8wdknxvxkcw60p72ddhkg2lvfuh9jqzz" readonly onclick="copyToClipboard(this)">
+          <input type="text" class="crypto-input" value="qqe99z466a8wdknxvxkcw60p72ddhkg2lvfuh9jqzz" readonly onclick="copyToClipboard(this)" />
         </div>
-
       </div>
     </div>
 
@@ -440,7 +450,6 @@ var map = L.map("map", {
       const donationBtn = document.getElementById("donationBtn");
       const closeDonationBtn = document.querySelector(".close-donation-btn");
 
-
       function applyZoomSettings(isPrecision) {
         map.scrollWheelZoom.disable();
 
@@ -473,7 +482,6 @@ var map = L.map("map", {
         donationModal.style.display = "none";
       };
 
-
       function applyTheme(isLight) {
         if (isLight) {
           document.body.classList.add("light-theme");
@@ -485,19 +493,18 @@ var map = L.map("map", {
 
       // Boot Loader for Settings
       function loadUserSettings() {
-
-      // Fetch and display dynamic app version
-      if (window.electronAPI && window.electronAPI.getAppVersion) {
-          window.electronAPI.getAppVersion().then(version => {
-              document.getElementById("appVersionDisplay").innerText = `Version ${version}`;
+        // Fetch and display dynamic app version
+        if (window.electronAPI && window.electronAPI.getAppVersion) {
+          window.electronAPI.getAppVersion().then((version) => {
+            document.getElementById("appVersionDisplay").innerText = `Version ${version}`;
           });
-      }
+        }
 
-      // If os is macOS apply css class to push the titlebar buttons on the side making space for macos traffic lights...
-      if (window.electronAPI && window.electronAPI.getPlatform) {
+        // If os is macOS apply css class to push the titlebar buttons on the side making space for macos traffic lights...
+        if (window.electronAPI && window.electronAPI.getPlatform) {
           const platform = window.electronAPI.getPlatform();
           document.body.classList.add(`os-${platform}`);
-      }
+        }
 
         // Check localStorage (default to true if not set)
         const isAutoUpdateEnabled = localStorage.getItem("autoUpdate") !== "false";
@@ -557,18 +564,40 @@ var map = L.map("map", {
 
       // Modal
 
-      const modal = document.getElementById("supportModal");
+      // --- Support, Donations & Credits Modal Logic ---
+      const supportModal = document.getElementById("supportModal");
       const supportBtn = document.getElementById("supportBtn");
-      const closeBtn = document.querySelector(".close-btn");
+      const closeSupportBtn = document.getElementById("closeSupportBtn");
 
+      const creditsModal = document.getElementById("creditsModal");
+      const openCreditsBtn = document.getElementById("openCreditsBtn");
+      const closeCreditsBtn = document.getElementById("closeCreditsBtn");
+
+      const openDonationsFromSupportBtn = document.getElementById("openDonationsFromSupportBtn");
+
+      // Support Modal Triggers
       supportBtn.onclick = function () {
-        modal.style.display = "block";
+        supportModal.style.display = "block";
+      };
+      closeSupportBtn.onclick = function () {
+        supportModal.style.display = "none";
       };
 
-      closeBtn.onclick = function () {
-        modal.style.display = "none";
+      // Inner Modal Routing (Close Support, Open Target)
+      openCreditsBtn.onclick = function () {
+        supportModal.style.display = "none";
+        creditsModal.style.display = "block";
       };
 
+      openDonationsFromSupportBtn.onclick = function () {
+        supportModal.style.display = "none";
+        donationModal.style.display = "block";
+      };
+
+      // Close Credits
+      closeCreditsBtn.onclick = function () {
+        creditsModal.style.display = "none";
+      };
 
       // --- Custom Alert Logic ---
       const alertModal = document.getElementById("customAlertModal");
@@ -590,26 +619,18 @@ var map = L.map("map", {
 
       // Unified global click handler for all modals
       window.onclick = function (event) {
-        if (event.target == modal) {
-          modal.style.display = "none";
-        }
-        if (event.target == alertModal) {
-          alertModal.style.display = "none";
-        }
-        if (event.target == settingsModal) {
-          settingsModal.style.display = "none";
-        }
-        if (event.target == donationModal) {
-          donationModal.style.display = "none";
-        }
+        if (event.target == supportModal) supportModal.style.display = "none";
+        if (event.target == alertModal) alertModal.style.display = "none";
+        if (event.target == settingsModal) settingsModal.style.display = "none";
+        if (event.target == donationModal) donationModal.style.display = "none";
+        if (event.target == creditsModal) creditsModal.style.display = "none";
       };
-
 
       // --- Native Folder Browser Logic ---
       async function browseFolder() {
         if (window.electronAPI && window.electronAPI.selectFolder) {
           const selectedPath = await window.electronAPI.selectFolder();
-          
+
           // If the user picked a folder (and didn't hit cancel), update the input field
           if (selectedPath) {
             document.getElementById("folderPath").value = selectedPath;
