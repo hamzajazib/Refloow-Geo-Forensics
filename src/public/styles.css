@@ -645,3 +645,40 @@ body.light-theme .crypto-input:focus {
     opacity: 1;
     transform: translateY(0);
 }
+
+/* =========================================
+   INPUT CONTROLS & BUTTONS
+   ========================================= */
+.browse-btn {
+    background-color: #1f2b4c;
+    color: #d0d0d0;
+    border: 1px solid #2a3a60;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 13px;
+    transition: all 0.2s ease;
+}
+
+.browse-btn:hover {
+    background-color: #2a3a60;
+    color: #ffffff;
+}
+
+.analyse-btn {
+    background-color: #e94560; 
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 13px;
+    transition: all 0.2s ease;
+}
+
+.analyse-btn:hover {
+    background-color: #ff5773; 
+    box-shadow: 0 0 8px rgba(233, 69, 96, 0.4); 
+}
