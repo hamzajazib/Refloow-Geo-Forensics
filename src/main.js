@@ -147,6 +147,20 @@ ipcMain.handle('get-app-version', () => {
     return app.getVersion();
 });
 
+// Native OS Folder Picker Handler
+ipcMain.handle('dialog:openDirectory', async () => {
+    const { canceled, filePaths } = await dialog.showOpenDialog({
+        title: 'Select Evidence Folder',
+        properties: ['openDirectory'] // Restrict to selecting folders
+    });
+    
+    if (canceled) {
+        return null; // User clicked "Cancel"
+    } else {
+        return filePaths[0]; // Returns the path of the selected folder
+    }
+});
+
 /*
 // Tells if GitHub was checked but no update was found
 autoUpdater.on('update-not-available', (info) => {
