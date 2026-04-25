@@ -135,6 +135,7 @@
       map.addControl(new L.Control.ZoomMode());
 
       let markers = [];
+      let polylineLayer = null;
 
       async function startScan() {
         const pathInput = document.getElementById("folderPath").value;
@@ -152,6 +153,11 @@
         markers.forEach((m) => map.removeLayer(m));
         markers = [];
 
+        if (polylineLayer) {
+          map.removeLayer(polylineLayer);
+          polylineLayer = null;
+        }
+
         try {
           const response = await fetch("/api/scan", {
             method: "POST",
@@ -167,29 +173,41 @@
             return;
           }
 
-          const data = result.data;
+          let data = result.data;
 
           if (data.length === 0) {
             statusMsg.innerText = "GPS data not found";
-            // Trigger the RED toast for 2.5 seconds
             showToast("Scan complete: No GPS data found in this directory.", true);
             return;
           }
 
+          // CHRONOLOGICAL SORTING ENGINE
+          // EXIF dates are often "YYYY:MM:DD HH:MM:SS". JS needs "YYYY-MM-DD" to parse safely.
+          data.sort((a, b) => {
+            const parseDate = (timeStr) => {
+              if (!timeStr || timeStr === "Unknown Time") return 0;
+              const formatted = timeStr.replace(/^(\d{4}):(\d{2}):(\d{2})/, "$1-$2-$3");
+              const timestamp = Date.parse(formatted);
+              return isNaN(timestamp) ? 0 : timestamp;
+            };
+            return parseDate(a.time) - parseDate(b.time);
+          });
+
           statusMsg.innerText = "Found " + data.length + " evidence.";
-          // Trigger the GREEN toast for 2.5 seconds
           showToast(`Success: ${data.length} evidence files located!`, false);
 
           let latlngs = [];
 
-          // Check if user wants images loaded
+          // LOADING PREFERENCES
           const showPreviews = localStorage.getItem("imagePreviews") === "true";
+          const showLines = localStorage.getItem("timelineLines") !== "false";
+          const showNumbers = localStorage.getItem("timelineNumbers") !== "false";
 
-          data.forEach((item) => {
+          // RENDERING MARKERS
+          data.forEach((item, index) => {
             let previewHtmlMap = "";
             let previewHtmlSidebar = "";
 
-            // If enabled, point the image source to our new secure Express route
             if (showPreviews) {
               const encodedPath = encodeURIComponent(item.fullPath);
               const imgSrc = `/api/image?path=${encodedPath}`;
@@ -198,6 +216,16 @@
             }
 
             const marker = L.marker([item.lat, item.lon]).addTo(map);
+
+            // Add the chronological number badge if enabled
+            if (showNumbers) {
+              marker.bindTooltip((index + 1).toString(), {
+                permanent: true,
+                direction: "right",
+                className: "timeline-number-tooltip",
+                offset: [-15, -2],
+              });
+            }
 
             const popupContent = `
                         ${previewHtmlMap}
@@ -214,11 +242,9 @@
 
             const div = document.createElement("div");
             div.className = "evidence-item";
-
-            // Reorganized HTML to wrap text in .evidence-info and append the thumbnail
             div.innerHTML = `
                         <div class="evidence-info">
-                            <span class="evidence-name">${item.name}</span>
+                            <span class="evidence-name">${index + 1}. ${item.name}</span>
                             <div class="evidence-meta">📅 ${item.time}</div>
                             <div class="evidence-meta">📱 ${item.camera}</div>
                         </div>
@@ -231,11 +257,14 @@
             listDiv.appendChild(div);
           });
 
+          // RENDER TIMELINE PATH
           if (latlngs.length > 0) {
             const bounds = L.latLngBounds(latlngs);
             map.fitBounds(bounds);
-            if (latlngs.length > 1) {
-              L.polyline(latlngs, {color: "#e94560"}).addTo(map);
+
+            // Only draw the red polyline if the setting is enabled and there are 2+ points
+            if (showLines && latlngs.length > 1) {
+              polylineLayer = L.polyline(latlngs, {color: "#e94560", weight: 3}).addTo(map);
             }
           }
         } catch (e) {
@@ -432,6 +461,21 @@
           </label>
           <p style="font-size: 0.9em; color: #888; margin-top: 5px;">Displays thumbnails in the map and sidebar. <b>Note:</b> May throttle performance during large bulk operations.</p>
         </div>
+
+        <div class="modal-section">
+          <h3>Timeline Reconstruction & Tracking</h3>
+          <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+            <input type="checkbox" id="timelineLinesToggle" style="width: 18px; height: 18px;" />
+            Draw Evidence Path (Red String)
+          </label>
+          <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; margin-top: 10px;">
+            <input type="checkbox" id="timelineNumbersToggle" style="width: 18px; height: 18px;" />
+            Show Chronological Numbers on Map
+          </label>
+          <p style="font-size: 0.9em; color: #888; margin-top: 5px;">
+            Traces the chronological movement between evidence points.
+          </p>
+        </div>
       </div>
     </div>
 
@@ -445,6 +489,9 @@
       const themeToggle = document.getElementById("themeToggle");
       const previewToggle = document.getElementById("previewToggle");
       const mapPrecisionToggle = document.getElementById("mapPrecisionToggle");
+
+      const timelineLinesToggle = document.getElementById("timelineLinesToggle");
+      const timelineNumbersToggle = document.getElementById("timelineNumbersToggle");
 
       const donationModal = document.getElementById("donationModal");
       const donationBtn = document.getElementById("donationBtn");
@@ -493,6 +540,12 @@
 
       // Boot Loader for Settings
       function loadUserSettings() {
+        const isTimelineLinesEnabled = localStorage.getItem("timelineLines") !== "false"; // Default true
+        timelineLinesToggle.checked = isTimelineLinesEnabled;
+
+        const isTimelineNumbersEnabled = localStorage.getItem("timelineNumbers") !== "false"; // Default true
+        timelineNumbersToggle.checked = isTimelineNumbersEnabled;
+
         // Fetch and display dynamic app version
         if (window.electronAPI && window.electronAPI.getAppVersion) {
           window.electronAPI.getAppVersion().then((version) => {
@@ -556,6 +609,14 @@
         if (isChecked && window.electronAPI) {
           window.electronAPI.triggerUpdateCheck("true");
         }
+      });
+
+      timelineLinesToggle.addEventListener("change", (e) => {
+        localStorage.setItem("timelineLines", e.target.checked ? "true" : "false");
+      });
+
+      timelineNumbersToggle.addEventListener("change", (e) => {
+        localStorage.setItem("timelineNumbers", e.target.checked ? "true" : "false");
       });
 
       document.addEventListener("DOMContentLoaded", () => {
